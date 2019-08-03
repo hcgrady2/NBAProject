@@ -1,0 +1,365 @@
+apply plugin: 'com.android.application'
+apply plugin: 'realm-android'
+// 添加插件
+apply plugin: 'com.mob.sdk'
+apply from: 'tinker-support.gradle'
+
+// 在MobSDK的扩展中注册SMSSDK的相关信息
+MobSDK {
+    appKey ""
+    appSecret ""
+    SMSSDK {}
+}
+
+android {
+    compileSdkVersion 27
+    buildToolsVersion "28.0.3"
+    defaultConfig {
+        applicationId "com.hcworld.nbalive"
+        minSdkVersion 17
+        targetSdkVersion 27
+        versionCode 5
+        versionName "3.0.0.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        flavorDimensions "versionCode"
+        multiDexEnabled true
+        vectorDrawables.useSupportLibrary = true
+
+        renderscriptSupportModeEnabled true
+        packagingOptions {
+            exclude 'META-INF/rxjava.properties'
+        }
+
+        // AndroidManifest.xml 里面UMENG_CHANNEL的value为 ${UMENG_CHANNEL_VALUE}
+        manifestPlaceholders = [UMENG_CHANNEL_VALUE: "other"]//添加一个默认渠道号
+
+        ndk {
+            //设置支持的SO库架构
+            abiFilters  'armeabi-v7a', 'x86'  // 'armeabi' ,'armeabi-v7a', 'x86_64', 'arm64-v8a'
+        }
+    }
+    // 编译选项
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+    // recommend
+    dexOptions {
+        jumboMode = true
+    }
+
+    // 签名配置
+    signingConfigs {
+        release {
+            try {
+                /*  storeFile file("./keystore/release.keystore")
+                  storePassword "testres"
+                  keyAlias "testres"
+                  keyPassword "testres"*/
+
+                keyAlias RELEASE_KEY_ALIAS
+                keyPassword RELEASE_KEY_PASSWORD
+                storeFile file(RELEASE_STORE_FILE)
+                storePassword RELEASE_STORE_PASSWORD
+
+
+            } catch (ex) {
+                throw new InvalidUserDataException(ex.toString())
+            }
+        }
+
+        debug {
+            storeFile file("./keystore/debug.keystore")
+        }
+    }
+
+    productFlavors {
+
+  /*      Tencent {//投放应用宝市场
+            buildConfigField "String", "TENCENT_SERVER", "\"http://sportsnba.qq.com\""
+            buildConfigField "String", "TECENT_URL_SERVER", "\"http://vv.video.qq.com\""
+            buildConfigField "String", "TECENT_URL_SERVER_1", "\"http://h5vv.video.qq.com\""
+            buildConfigField "String", "HUPU_LOGIN_SERVER", "\"http://passport.hupu.com/\""
+            buildConfigField "String", "HUPU_FORUM_SERVER", "\"http://bbs.mobileapi.hupu.com/1/7.0.8/\""
+            buildConfigField "String", "HUPU_GAMES_SERVER", "\"http://games.mobileapi.hupu.com/1/7.0.8/\""
+            buildConfigField "String", "TMIAAO_SERVER", "\"http://nba.tmiaoo.com\""
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "Tencent"]
+        }
+        Baidu {//投放百度市场
+            buildConfigField "String", "TENCENT_SERVER", "\"http://sportsnba.qq.com\""
+            buildConfigField "String", "TECENT_URL_SERVER", "\"http://vv.video.qq.com\""
+            buildConfigField "String", "TECENT_URL_SERVER_1", "\"http://h5vv.video.qq.com\""
+            buildConfigField "String", "HUPU_LOGIN_SERVER", "\"http://passport.hupu.com/\""
+            buildConfigField "String", "HUPU_FORUM_SERVER", "\"http://bbs.mobileapi.hupu.com/1/7.0.8/\""
+            buildConfigField "String", "HUPU_GAMES_SERVER", "\"http://games.mobileapi.hupu.com/1/7.0.8/\""
+            buildConfigField "String", "TMIAAO_SERVER", "\"http://nba.tmiaoo.com\""
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "Baidu"]
+        }
+        Wandoujia {//投放豌豆荚市场
+            buildConfigField "String", "TENCENT_SERVER", "\"http://sportsnba.qq.com\""
+            buildConfigField "String", "TECENT_URL_SERVER", "\"http://vv.video.qq.com\""
+            buildConfigField "String", "TECENT_URL_SERVER_1", "\"http://h5vv.video.qq.com\""
+            buildConfigField "String", "HUPU_LOGIN_SERVER", "\"http://passport.hupu.com/\""
+            buildConfigField "String", "HUPU_FORUM_SERVER", "\"http://bbs.mobileapi.hupu.com/1/7.0.8/\""
+            buildConfigField "String", "HUPU_GAMES_SERVER", "\"http://games.mobileapi.hupu.com/1/7.0.8/\""
+            buildConfigField "String", "TMIAAO_SERVER", "\"http://nba.tmiaoo.com\""
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "Wandoujia"]
+        }
+
+        Qihoo {
+            buildConfigField "String", "TENCENT_SERVER", "\"http://sportsnba.qq.com\""
+            buildConfigField "String", "TECENT_URL_SERVER", "\"http://vv.video.qq.com\""
+            buildConfigField "String", "TECENT_URL_SERVER_1", "\"http://h5vv.video.qq.com\""
+            buildConfigField "String", "HUPU_LOGIN_SERVER", "\"http://passport.hupu.com/\""
+            buildConfigField "String", "HUPU_FORUM_SERVER", "\"http://bbs.mobileapi.hupu.com/1/7.0.8/\""
+            buildConfigField "String", "HUPU_GAMES_SERVER", "\"http://games.mobileapi.hupu.com/1/7.0.8/\""
+            buildConfigField "String", "TMIAAO_SERVER", "\"http://nba.tmiaoo.com\""
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "360"]
+        }
+
+        Xiaomi {//投放小米市场
+            buildConfigField "String", "TENCENT_SERVER", "\"http://sportsnba.qq.com\""
+            buildConfigField "String", "TECENT_URL_SERVER", "\"http://vv.video.qq.com\""
+            buildConfigField "String", "TECENT_URL_SERVER_1", "\"http://h5vv.video.qq.com\""
+            buildConfigField "String", "HUPU_LOGIN_SERVER", "\"http://passport.hupu.com/\""
+            buildConfigField "String", "HUPU_FORUM_SERVER", "\"http://bbs.mobileapi.hupu.com/1/7.0.8/\""
+            buildConfigField "String", "HUPU_GAMES_SERVER", "\"http://games.mobileapi.hupu.com/1/7.0.8/\""
+            buildConfigField "String", "TMIAAO_SERVER", "\"http://nba.tmiaoo.com\""
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "Xiaomi"]
+        }
+        Meizu {//投放魅族市场
+            buildConfigField "String", "TENCENT_SERVER", "\"http://sportsnba.qq.com\""
+            buildConfigField "String", "TECENT_URL_SERVER", "\"http://vv.video.qq.com\""
+            buildConfigField "String", "TECENT_URL_SERVER_1", "\"http://h5vv.video.qq.com\""
+            buildConfigField "String", "HUPU_LOGIN_SERVER", "\"http://passport.hupu.com/\""
+            buildConfigField "String", "HUPU_FORUM_SERVER", "\"http://bbs.mobileapi.hupu.com/1/7.0.8/\""
+            buildConfigField "String", "HUPU_GAMES_SERVER", "\"http://games.mobileapi.hupu.com/1/7.0.8/\""
+            buildConfigField "String", "TMIAAO_SERVER", "\"http://nba.tmiaoo.com\""
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "Meizu"]
+        }
+        Huawei {//投放华为应用市场
+            buildConfigField "String", "TENCENT_SERVER", "\"http://sportsnba.qq.com\""
+            buildConfigField "String", "TECENT_URL_SERVER", "\"http://vv.video.qq.com\""
+            buildConfigField "String", "TECENT_URL_SERVER_1", "\"http://h5vv.video.qq.com\""
+            buildConfigField "String", "HUPU_LOGIN_SERVER", "\"http://passport.hupu.com/\""
+            buildConfigField "String", "HUPU_FORUM_SERVER", "\"http://bbs.mobileapi.hupu.com/1/7.0.8/\""
+            buildConfigField "String", "HUPU_GAMES_SERVER", "\"http://games.mobileapi.hupu.com/1/7.0.8/\""
+            buildConfigField "String", "TMIAAO_SERVER", "\"http://nba.tmiaoo.com\""
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "HuaWei"]
+        }*/
+
+        //只保留 这个 了
+
+        Other {//其他渠道以及自己测试
+            buildConfigField "String", "TENCENT_SERVER", "\"http://sportsnba.qq.com\""
+            buildConfigField "String", "TECENT_URL_SERVER", "\"http://vv.video.qq.com\""
+            buildConfigField "String", "TECENT_URL_SERVER_1", "\"http://h5vv.video.qq.com\""
+            buildConfigField "String", "HUPU_LOGIN_SERVER", "\"http://passport.hupu.com/\""
+            buildConfigField "String", "HUPU_FORUM_SERVER", "\"http://bbs.mobileapi.hupu.com/1/7.0.8/\""
+            buildConfigField "String", "HUPU_GAMES_SERVER", "\"http://games.mobileapi.hupu.com/1/7.0.8/\""
+            buildConfigField "String", "TMIAAO_SERVER", "\"http://nba.tmiaoo.com\""
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "Other"]
+        }
+
+
+    }
+
+
+    buildTypes {
+
+        release {
+            shrinkResources true //启用资源压缩
+            minifyEnabled true
+            signingConfig signingConfigs.release
+            // 混淆
+            // Zipalign优化
+            zipAlignEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            debuggable true
+            minifyEnabled false
+            signingConfig signingConfigs.debug
+        }
+    }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:27.1.0'
+
+    implementation 'com.android.support:support-vector-drawable:27.1.0'
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    implementation 'com.android.support:support-annotations:27.1.1'
+    implementation 'com.android.support:support-v4:27.1.0'
+    implementation 'com.android.support:recyclerview-v7:27.1.0'
+    implementation 'com.android.support:design:27.1.0'
+    implementation 'com.android.support:cardview-v7:27.1.0'
+    annotationProcessor "com.jakewharton:butterknife-compiler:8.4.0"
+    implementation 'com.jakewharton:butterknife:8.4.0'
+
+    //流动侧滑，直接依赖无法修改代码。
+    implementation 'com.mxn.soul:flowingdrawer-core:2.0.0'
+
+    //implementation 'com.nineoldandroids:library:2.4.0'
+
+    //glide
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+
+    //指示器,可能有滑动冲突，不用这个了，可能是流动侧滑的原因。
+
+    //implementation 'com.android.support:support-v4:28.0.0'
+
+    // implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
+
+    //另一个指示器，module 形式依赖
+
+    //  implementation project(':magicindicator')
+
+    //流动侧滑，module 形式依赖
+
+    //  implementation project(':flowingdrawer-core')
+
+    //这个依赖要有，是一个动画库
+    implementation 'com.nineoldandroids:library:2.4.0'
+
+    //视频播放器,这个是完整版依赖(不用完整包太大)
+
+    //implementation 'com.shuyu:GSYVideoPlayer:6.0.1'
+    implementation 'com.shuyu:gsyVideoPlayer-java:6.0.1'
+
+    //是否需要ExoPlayer模式
+    implementation 'com.shuyu:GSYVideoPlayer-exo2:6.0.1'
+
+    //根据你的需求ijk模式的so
+
+    // implementation 'com.shuyu:gsyVideoPlayer-armv5:6.0.1'
+    implementation 'com.shuyu:gsyVideoPlayer-armv7a:6.0.1'
+    implementation 'com.shuyu:gsyVideoPlayer-x86:6.0.1'
+
+    //内存泄漏检测
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.2'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.2'
+
+    // Optional, if you use support library fragments:
+    debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.2'
+
+    //okhttp3
+
+    //implementation("com.squareup.okhttp3:okhttp:3.12.0")
+
+    // implementation 'com.squareup.okhttp3:okhttp:3.2.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.6.0'
+
+    //implementation 'com.squareup.okhttp3:okhttp:3.11.0'
+
+    //retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.1.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.1.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
+
+    //gson
+    implementation 'com.google.code.gson:gson:2.5'
+
+    //fastJson
+    implementation 'com.alibaba:fastjson:1.2.54'
+    implementation 'com.alibaba:fastjson:1.1.70.android'
+
+    //face book 图片加载组件
+    implementation 'com.facebook.fresco:fresco:1.11.0'
+
+    //easy adapter(先使用这个，后期找其他的方法)
+    implementation 'com.yuyh.easyadapter:library:1.2.0'
+
+    //glide
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+    implementation 'jp.wasabeef:glide-transformations:4.0.1'
+
+    //eventbus
+    implementation 'org.greenrobot:eventbus:3.1.1'
+
+    //jsoup 解析网页
+    implementation 'org.jsoup:jsoup:1.11.3'
+
+    // 日历控件
+    implementation 'com.github.prolificinteractive:material-calendarview:2.0.0'
+    implementation 'io.reactivex:rxandroid:1.1.0'
+    implementation 'io.reactivex:rxjava:1.1.0'
+
+    //智能刷新控件
+    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-19'
+
+    //implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-19'//没有使用特殊Header，可以不加这行
+
+    //动态模糊库
+    implementation 'com.github.mmin18:realtimeblurview:1.0.6'
+
+    //bmob
+    implementation 'cn.bmob.android:bmob-sdk:3.4.6'
+
+    //如果你想应用能够兼容Android6.0，请添加此依赖(org.apache.http.legacy.jar)
+    implementation 'cn.bmob.android:http-legacy:1.0'
+
+    //umeng
+    implementation 'com.umeng.umsdk:analytics:7.5.4'
+    implementation 'com.umeng.umsdk:common:1.5.4'
+
+    //加密
+    implementation files('libs/sun.misc.BASE64Decoder.jar')
+
+    //版本更新
+
+    //  implementation 'com.androidkun:xversionupdate:1.0.5'
+    implementation 'com.qianwen:update-app:3.5.2'
+
+    //bugly，集成热更新不用 bugly 了
+
+    //implementation 'com.tencent.bugly:crashreport:latest.release'
+
+    //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.2.0
+    implementation 'com.android.support:multidex:1.0.1'
+
+    // 多dex配置
+
+    //注释掉原有bugly的仓库
+    implementation 'com.tencent.bugly:crashreport_upgrade:latest.release'
+
+    // 指定tinker依赖版本（注：应用升级1.3.5版本起，不再内置tinker）
+    implementation 'com.tencent.tinker:tinker-android-lib:latest.release'
+    implementation 'com.tencent.bugly:nativecrashreport:latest.release'
+
+    //其中latest.release指代最新版本号，也可以指定明确的版本号，例如2.2.0
+
+    //RX permission
+    implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
+    implementation('com.qianwen:okhttp-utils:3.9.1') {
+        exclude group: 'com.squareup.okhttp3'
+    }
+
+
+
+
+
+
+
+}

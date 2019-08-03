@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/toutiao_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.hcworld.nbalive.UI.widget.SupportRecyclerView
+        android:id="@+id/toutiao_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbarThumbVertical="@drawable/scrollbar"
+        android:layoutAnimation="@anim/layout_animation_fall_down"
+        android:scrollbars="vertical" />
+
+    <!-- <include layout="@layout/layout_common_empty_view" />-->
+
+</android.support.v4.widget.SwipeRefreshLayout>

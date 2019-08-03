@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/set_clear_cache"
+        >
+
+<!--
+        清除缓存
+-->
+        <Preference
+            android:key="clear_cache"
+            android:summary="@string/set_current_cache"
+            android:title="@string/set_clear_cache" />
+
+<!--
+        启动图
+-->
+
+<!--        <SwitchPreference
+            android:defaultValue="true"
+            android:key="original_splash"
+            android:summary="@string/set_original_splash"
+            android:title="@string/original_splash" />-->
+
+
+<!--
+        夜间模式
+-->
+     <!--   <SwitchPreference
+            android:defaultValue="false"
+            android:key="original_night_mode"
+            android:summary="@string/set_original_night_mode"
+            android:title="@string/original_night_mode" />
+-->
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/set_check_version">
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="check_version"
+            android:title="@string/set_check_version"
+            android:textColor="@color/base"
+            />
+<!--
+        应用反馈
+-->
+  <!--      <Preference
+            android:key="feedback"
+            android:summary="@string/set_post_feedback"
+            android:title="@string/set_feedback" />-->
+    </PreferenceCategory>
+
+
+    <PreferenceCategory android:title="@string/set_other_setting">
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="check_splash"
+            android:title="@string/set_original_splash"
+            android:textColor="@color/base"
+            />
+        <!--
+                应用反馈
+        -->
+        <!--      <Preference
+                  android:key="feedback"
+                  android:summary="@string/set_post_feedback"
+                  android:title="@string/set_feedback" />-->
+
+
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

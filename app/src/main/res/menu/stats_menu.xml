@@ -1,0 +1,20 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <item android:id="@+id/stats_everyday"
+        android:title="@string/stats_everyday"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/stats_regular"
+        android:title="@string/stats_regular"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/stats_playoffs"
+        android:title="@string/stats_playoffs"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
+
+</menu>

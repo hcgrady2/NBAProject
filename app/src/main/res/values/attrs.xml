@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="StickNavLayout">
+        <!--默认是否悬停tab-->
+        <attr name="isStickNav" format="boolean" />
+        <!--距离悬浮的位置-->
+        <attr name="stickOffset" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="item_view">
+        <attr name="show_bottomline" format="boolean" />
+        <attr name="show_leftimg" format="integer" />
+        <attr name="show_text" format="string" />
+    </declare-styleable>
+
+
+    <declare-styleable name="account_item">
+        <attr name="is_show_right" format="boolean" />
+        <attr name="account_item_name" format="string" />
+        <attr name="account_item_content" format="string" />
+    </declare-styleable>
+</resources>
